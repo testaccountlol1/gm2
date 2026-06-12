@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <optional>
+#include <sw/redis++?redis++.h>
 enum class GameState
 {
     Playing,

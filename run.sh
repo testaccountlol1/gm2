@@ -30,4 +30,5 @@ if ! command -v g++ &> /dev/null || ! command -v make &> /dev/null; then
 fi
 
 echo "Dependencies ready. Executing make run..."
+valkey-server &
 cd code && make run

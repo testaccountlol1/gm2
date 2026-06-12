@@ -10,7 +10,7 @@ CPPFLAGS := -Iinclude -MMD -MP $(shell pkg-config --cflags sfml-graphics sfml-wi
 LDFLAGS  := 
 
 # FIX 2: Place the library linkers (--libs) where the linker actually reads them
-LDLIBS   := $(shell pkg-config --libs sfml-graphics sfml-window sfml-system)
+LDLIBS   := $(shell pkg-config --libs sfml-graphics sfml-window sfml-system) -lredis++ -lhiredis
 
 # ==========================================
 # Paths and Files
