@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -euo pipefail
 OS="$(uname -s)"
 echo "Checking dependencies on $OS..."
 #the reason theres no windows and the correctly working thing only works for arch is cuz i only like arhc and fuck every other os
