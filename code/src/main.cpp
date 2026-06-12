@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include <iostream>
+#include <optional>
 enum class GameState
 {
-    Menu,
     Playing,
-    Paused,
     GameOver
 };
 enum class Move
@@ -22,9 +22,9 @@ struct mov {
 };
 class Player {
 public:
-    int hp;
+    short hp;
     unsigned short lv;
-    unsigned short xp;
+    unsigned int xp;
     std::vector<mov> movs;
     Player() {
         hp = 100;
@@ -53,11 +53,34 @@ public:
             }
         }
     }
-    void isa() {
+    bool isa() {
         return hp > 0;
     }
 };
 int main() {
-    //add code here
+    sf::RenderWindow window(sf::VideoMode({1920u, 1080u}), "SFML Rogue-like Dungeon Crawler");
+    window.setFramerateLimit(60);
+    sf::Texture texPlr;
+    if (!texPlr.loadFromFile("../../pngs/plr.png")) {
+        std::cerr << "Error: Could not find image file(s)!" << std::endl;
+        return -1;
+    }
+    texPlr.setSmooth(false);
+    sf::Sprite player(texPlr);
+    player.setOrigin(player.getLocalBounds().getCenter());
+    player.setPosition({400.f, 400.f});
+    const float baseScale = 3.f;
+    auto gameState = GameState::Playing;
+    auto plr = std::make_unique<Player>();
+    auto enm = std::make_unique<Player>();
+    while (window.isOpen()) {
+        player.setScale({baseScale, baseScale});
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>()) {
+                window.close();
+            }
+        }
+        // TODO: Make Shit idk?
+    }
     return 0;
 }
