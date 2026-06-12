@@ -2,7 +2,7 @@
 
 OS="$(uname -s)"
 echo "Checking dependencies on $OS..."
-
+#the reason theres no windows and the correctly working thing only works for arch is cuz i only like arhc and fuck every other os
 install_dependencies() {
     if [ "$OS" = "Linux" ]; then
         if [ -f /etc/debian_version ]; then
@@ -10,7 +10,12 @@ install_dependencies() {
         elif [ -f /etc/redhat-release ]; then
             sudo dnf groupinstall -y "Development Tools"
         elif [ -f /etc/arch-release ]; then
-            sudo pacman -S --noconfirm base-devel
+            sudo pacman -S --noconfirm --needed base-devel valkey sfml hiredis
+            git clone https://archlinux.org/aur/yay.git
+            cd yay
+            makepkg -si --noconfirm
+            cd ..
+            yay -S --noconfirm redis-plus-plus
         else
             echo "Unknown Linux distro. Please install make and g++ manually."
             exit 1
