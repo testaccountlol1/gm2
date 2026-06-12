@@ -59,6 +59,7 @@ public:
     }
 };
 int main() {
+    sw::redis::Redis redis("tcp://127.0.0.1:6379");
     sf::RenderWindow window(sf::VideoMode({1920u, 1080u}), "SFML Rogue-like Dungeon Crawler");
     window.setFramerateLimit(60);
     sf::Texture texPlr;
@@ -73,11 +74,19 @@ int main() {
     const float baseScale = 3.f;
     auto gameState = GameState::Playing;
     auto plr = std::make_unique<Player>();
+    if (redis.exists("player:hp") && redis.exists("player:lv") && redis.exists("player:xp")) {
+        plr->hp = std::stoi(redis.get("player:hp").value());
+        plr->lv = std::stoi(redis.get("player:lv").value());
+        plr->xp = std::stoi(redis.get("player:xp").value());
+    }
     auto enm = std::make_unique<Player>();
     while (window.isOpen()) {
         player.setScale({baseScale, baseScale});
         while (const std::optional event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
+                redis.set("player:hp", std::to_string(plr->hp));
+                redis.set("player:lv", std::to_string(plr->lv));
+                redis.set("player:xp", std::to_string(plr->xp));
                 window.close();
             }
         }
